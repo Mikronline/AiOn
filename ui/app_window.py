@@ -68,15 +68,15 @@ class AiOnApp:
         self.notes_button = self.utworz_przycisk("📝 Notatki dzienne", self.open_notes, 1, 0, width=16)
         self.analyzer_button = self.utworz_przycisk("📊 Analizator danych", self.open_analyzer, 1, 1, width=18)
         self.calendar_button = self.utworz_przycisk("📅 Kalendarz", self.open_calendar, 1, 2, width=16)
-        dolny_frame = tk.Frame(self.button_frame, bg=self.bg_color)
-        dolny_frame.grid(row=2, column=0, columnspan=3)
+        self.dolny_frame = tk.Frame(self.button_frame, bg=self.bg_color)
+        self.dolny_frame.grid(row=2, column=0, columnspan=3)
 
-        self.week_button = tk.Button(dolny_frame, text="📅 Aktywność tyg.",
+        self.week_button = tk.Button(self.dolny_frame, text="📅 Aktywność tyg.",
                                      command=self.open_week_activity, width=18,
                                      bg=self.bg_color, fg=self.fg_color)
         self.week_button.pack(side="left", padx=10, pady=5)
 
-        self.stats_button = tk.Button(dolny_frame, text="🔍 Statystyki",
+        self.stats_button = tk.Button(self.dolny_frame, text="🔍 Statystyki",
                                       command=self.open_stats, width=18,
                                       bg=self.bg_color, fg=self.fg_color)
         self.stats_button.pack(side="left", padx=10, pady=5)
@@ -147,8 +147,12 @@ class AiOnApp:
             self.apply_colors()
 
     def apply_colors(self):
+        self.root.configure(bg=self.bg_color)
+        self.main_frame.configure(bg=self.bg_color)
+        self.button_frame.configure(bg=self.bg_color)
+        self.dolny_frame.configure(bg=self.bg_color)
+
         for widget in [
-            self.root, self.main_frame, self.button_frame,
             self.notes_button, self.analyzer_button, self.calendar_button,
             self.week_button, self.stats_button, self.color_button, self.time_label
         ]:
@@ -156,6 +160,7 @@ class AiOnApp:
                 widget.configure(bg=self.bg_color, fg=self.fg_color)
             except:
                 pass
+
         try:
             self.color_menu.configure(bg=self.bg_color, fg=self.fg_color)
         except:

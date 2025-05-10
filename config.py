@@ -3,11 +3,17 @@ import json
 import ctypes
 import stat
 import tkinter as tk
+import sys
 from tkinter import messagebox
 from pathlib import Path
 
 # Główne ścieżki
-BASE_DIR = Path(os.path.abspath(os.path.dirname(__file__)))
+
+if getattr(sys, 'frozen', False):
+    BASE_DIR = Path(sys.executable).parent
+else:
+    BASE_DIR = Path(os.path.abspath(os.path.dirname(__file__)))
+
 CONFIG_PATH = BASE_DIR / "aion_config.json"
 CALENDAR_DIR = BASE_DIR / "calendar"
 NOTES_DIR = BASE_DIR / "notes"
