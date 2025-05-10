@@ -1,0 +1,17 @@
+# Python cache
+__pycache__/
+*.pyc
+
+# PyInstaller
+build/
+dist/
+*.spec
+*.exe
+
+# Konfiguracje użytkownika
+aion_config.json
+reminder_cache.json
+
+# IDE
+.vscode/
+.idea/
