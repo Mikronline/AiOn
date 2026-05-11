@@ -9,7 +9,7 @@ from tkinter import ttk
 from config import NOTES_DIR
 
 
-def open_analyzer_window(root, bg_color, fg_color, force_reload=False):
+def open_analyzer_window(root, bg_color, fg_color, font, font_size,force_reload=False):
     os.makedirs(NOTES_DIR, exist_ok=True)
 
     wybrane_pliki = list(filedialog.askopenfilenames(
@@ -88,24 +88,25 @@ def open_analyzer_window(root, bg_color, fg_color, force_reload=False):
                    background=bg_color,
                    foreground=fg_color,
                    fieldbackground=bg_color,
-                   rowheight=25)
+                   rowheight=25,
+                   font=(font, font_size))
     styl.map("Treeview", background=[("selected", fg_color)])
 
-    pełny_tekst = scrolledtext.ScrolledText(okno, wrap="word", font=("Helvetica", 10),
+    pełny_tekst = scrolledtext.ScrolledText(okno, wrap="word", font=(font, font_size),
                                             bg=bg_color, fg=fg_color)
     pełny_tekst.pack(fill="both", expand=True, padx=10, pady=(0, 10))
 
     Button(frame_przyciski, text="📂 Dodaj notatki",
            command=lambda: dodaj_notatki(tree, ścieżki, pełny_tekst, bg_color, fg_color),
-           bg=bg_color, fg=fg_color, font=("Helvetica", 10, "bold")).pack(side="left", padx=10)
+           bg=bg_color, fg=fg_color, font=(font, font_size, "bold")).pack(side="left", padx=10)
 
     Button(frame_przyciski, text="🗑️ Usuń zaznaczoną",
            command=lambda: usuń_z_drzewa(tree, ścieżki),
-           bg=bg_color, fg=fg_color, font=("Helvetica", 10, "bold")).pack(side="left", padx=10)
+           bg=bg_color, fg=fg_color, font=(font, font_size, "bold")).pack(side="left", padx=10)
 
     Button(frame_przyciski, text="🧠 Wykryj zadania",
-           command=lambda: wykryj_zadania(wybrane_pliki, bg_color, fg_color),
-           bg=bg_color, fg=fg_color, font=("Helvetica", 10, "bold")).pack(side="left", padx=10)
+           command=lambda: wykryj_zadania(wybrane_pliki, bg_color, fg_color, font, font_size),
+           bg=bg_color, fg=fg_color, font=(font, font_size, "bold")).pack(side="left", padx=10)
 
     dodaj_do_drzewa(tree, wybrane_pliki, ścieżki)
     dane_początkowe.extend(pobierz_dane())
@@ -177,7 +178,7 @@ def usuń_z_drzewa(tree, ścieżki):
             del ścieżki[indeks]
 
 
-def wykryj_zadania(pliki, bg_color, fg_color):
+def wykryj_zadania(pliki, bg_color, fg_color, font, font_size):
     słowa_kluczowe = ["ważne", "jutro", "do zrobienia", "spotkanie", "projekt", "termin", "egzamin", "zadanie"]
     znalezione = []
 
@@ -198,14 +199,14 @@ def wykryj_zadania(pliki, bg_color, fg_color):
     popup.geometry("600x400")
 
     Label(popup, text="Zadania wykryte na podstawie słów kluczowych:",
-          bg=bg_color, fg=fg_color, font=("Helvetica", 12, "bold")).pack(pady=10)
+          bg=bg_color, fg=fg_color, font=(font, font_size, "bold")).pack(pady=10)
 
     if znalezione:
-        pole = scrolledtext.ScrolledText(popup, wrap="word", font=("Helvetica", 10),
+        pole = scrolledtext.ScrolledText(popup, wrap="word", font=(font, font_size),
                                          bg=bg_color, fg=fg_color)
         pole.pack(fill="both", expand=True, padx=10, pady=10)
         for plik, linia in znalezione:
             pole.insert("end", f"📁 {plik}: {linia}\n")
     else:
         Label(popup, text="Nie wykryto żadnych zadań. ✨",
-              bg=bg_color, fg=fg_color, font=("Helvetica", 11)).pack(pady=20)
+              bg=bg_color, fg=fg_color, font=(font, font_size)).pack(pady=20)

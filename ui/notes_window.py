@@ -5,7 +5,7 @@ from tkinter import Toplevel, Label, Button, Frame, filedialog, messagebox, scro
 from config import NOTES_DIR
 
 
-def open_notes_window(root, bg_color, fg_color):
+def open_notes_window(root, bg_color, fg_color, font, font_size):
     note_win = Toplevel(root, bg=bg_color)
     note_win.title("Notatki dzienne")
     note_win.geometry("600x500")
@@ -14,11 +14,11 @@ def open_notes_window(root, bg_color, fg_color):
     today = datetime.datetime.now().strftime("%Y-%m-%d")
     os.makedirs(NOTES_DIR, exist_ok=True)
 
-    Label(note_win, text=f"Dzisiaj: {today}", font=("Helvetica", 12),
+    Label(note_win, text=f"Dzisiaj: {today}", font=(font, font_size),
           bg=bg_color, fg=fg_color).pack(pady=5)
 
     text_area = scrolledtext.ScrolledText(note_win, wrap="word",
-                                          font=("Helvetica", 10),
+                                          font=(font, font_size),
                                           bg=bg_color, fg=fg_color)
     text_area.pack(expand=True, fill='both')
     text_area.focus_set()
@@ -36,11 +36,11 @@ def open_notes_window(root, bg_color, fg_color):
 
     Button(button_frame, text="Zapisz notatkę",
            command=lambda: save_note(text_area),
-           bg=bg_color, fg=fg_color).grid(row=0, column=0, padx=5)
+           bg=bg_color, fg=fg_color, font=(font, font_size)).grid(row=0, column=0, padx=5)
 
     Button(button_frame, text="Otwórz notatkę",
            command=lambda: open_note(text_area),
-           bg=bg_color, fg=fg_color).grid(row=0, column=1, padx=5)
+           bg=bg_color, fg=fg_color, font=(font, font_size)).grid(row=0, column=1, padx=5)
 
 
 def get_last_note_path(directory):

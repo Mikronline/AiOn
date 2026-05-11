@@ -4,7 +4,7 @@ import datetime
 from config import CALENDAR_DIR, NOTES_DIR
 
 
-def show_welcome_tip(root, bg_color, fg_color):
+def show_welcome_tip(root, bg_color, fg_color, font, font_size):
     """Wyświetla okno z podpowiedzią dnia na podstawie kalendarza i notatek."""
     today = datetime.date.today()
     messages = []
@@ -54,7 +54,7 @@ def show_welcome_tip(root, bg_color, fg_color):
     label.pack(pady=(10, 5))
 
     for msg in messages:
-        tk.Label(tip, text=msg, font=("Helvetica", 10),
+        tk.Label(tip, text=msg, font=(font, font_size),
                  bg=bg_color, fg=fg_color, wraplength=300, justify="left").pack(anchor="w", padx=20)
 
     tip.after(8000, tip.destroy)

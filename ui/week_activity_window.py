@@ -6,9 +6,11 @@ from config import NOTES_DIR
 
 
 class WeekActivityWindow:
-    def __init__(self, root, bg_color, fg_color):
+    def __init__(self, root, bg_color, fg_color, font, font_size):
         self.bg_color = bg_color
         self.fg_color = fg_color
+        self.font = font
+        self.font_size = font_size
 
         self.window = tk.Toplevel(root)
         self.window.title("📅 Tygodniowa aktywność")
@@ -23,7 +25,7 @@ class WeekActivityWindow:
         """Tworzy elementy graficzne okna."""
         tytul = tk.Label(self.window,
                          text="📅 Twoja aktywność w tym tygodniu",
-                         font=("Helvetica", 13, "bold"),
+                         font=(self.font, self.font_size, "bold"),
                          bg=self.bg_color,
                          fg=self.fg_color)
         tytul.pack(pady=10)
@@ -33,7 +35,7 @@ class WeekActivityWindow:
             wrap="word",
             bg=self.bg_color,
             fg=self.fg_color,
-            font=("Helvetica", 10),
+            font=(self.font, self.font_size),
             height=14,
             width=48,
             borderwidth=0

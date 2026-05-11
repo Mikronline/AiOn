@@ -3,26 +3,27 @@ import json
 import ctypes
 import stat
 import tkinter as tk
-import sys
 from tkinter import messagebox
 from pathlib import Path
+from utils.app_data import APP_DATA_DIR
 
-# Główne ścieżki
-
-if getattr(sys, 'frozen', False):
-    BASE_DIR = Path(sys.executable).parent
-else:
-    BASE_DIR = Path(os.path.abspath(os.path.dirname(__file__)))
+# Główne ścieżki (AppData)
+BASE_DIR = Path(APP_DATA_DIR)
 
 CONFIG_PATH = BASE_DIR / "aion_config.json"
 CALENDAR_DIR = BASE_DIR / "calendar"
 NOTES_DIR = BASE_DIR / "notes"
 
+# Tworzenie folderów
+BASE_DIR.mkdir(parents=True, exist_ok=True)
+CALENDAR_DIR.mkdir(parents=True, exist_ok=True)
+NOTES_DIR.mkdir(parents=True, exist_ok=True)
+
 # Domyślne ustawienia
 DEFAULT_CONFIG = {
     "kolor_tla": "#000000",
     "kolor_tekstu": "#ffffff",
-    "samouczek_ukończony": False,
+    "samouczek_ukonczony": False,
     "first_launch": True,
     "run_in_background": False,
     "run_on_startup": False,
@@ -31,7 +32,9 @@ DEFAULT_CONFIG = {
     "notify_from_notes": True,
     "welcome_shown": False,
     "last_opened_window": None,
-    "reopen_last_window": True
+    "reopen_last_window": True,
+    "font": "Helvetica",
+    "font_size": 10
 }
 
 def ukryj_plik_konfig():

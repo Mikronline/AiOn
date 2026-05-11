@@ -7,21 +7,23 @@ from config import NOTES_DIR
 
 
 class StatsWindow(Toplevel):
-    def __init__(self, master, bg_color, fg_color):
+    def __init__(self, master, bg_color, fg_color, font, font_size):
         super().__init__(master)
         self.title("📊 Statystyki")
         self.configure(bg=bg_color)
         self.geometry("650x600")
 
+        self.font_size = font_size
+        self.font = font
         self.bg_color = bg_color
         self.fg_color = fg_color
 
         self.text_widget = Text(self, wrap="word", bg=bg_color, fg=fg_color,
-                                font=("Helvetica", 11), padx=10, pady=10, borderwidth=0)
+                                font=(font, font_size), padx=10, pady=10, borderwidth=0)
         self.text_widget.pack(fill="both", expand=True, padx=10, pady=(10, 5))
 
         self.refresh_button = Button(self, text="🔄 Odśwież statystyki", bg=bg_color, fg=fg_color,
-                                     command=self.refresh_stats, relief="groove", font=("Helvetica", 10))
+                                     command=self.refresh_stats, relief="groove", font=(font, font_size))
         self.refresh_button.pack(pady=(0, 10))
 
         self.display_stats()
@@ -114,7 +116,7 @@ class StatsWindow(Toplevel):
 
     def insert_title(self, text):
         self.text_widget.insert(END, f"{text}\n", "bold")
-        self.text_widget.tag_configure("bold", font=("Helvetica", 11, "bold"))
+        self.text_widget.tag_configure("bold", font=(self.font, self.font_size, "bold"))
 
     def insert_line(self, text):
         self.text_widget.insert(END, f"{text}\n")

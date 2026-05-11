@@ -10,7 +10,7 @@ MIESIĄCE = [
     "lipca", "sierpnia", "września", "października", "listopada", "grudnia"
 ]
 
-def show_welcome_intro(root, bg_color, fg_color, on_start_callback=None):
+def show_welcome_intro(root, bg_color, fg_color, font, font_size, on_start_callback=None):
     """Wyświetla ekran powitalny z datą i przyciskiem rozpoczęcia."""
     now = datetime.datetime.now()
     dzien_tygodnia = DNI_TYGODNIA[now.weekday()]
@@ -39,7 +39,7 @@ def show_welcome_intro(root, bg_color, fg_color, on_start_callback=None):
     win.geometry(f"{width}x{height}+{x}+{y}")
 
     tk.Label(win, text=tekst, bg=bg_color, fg=fg_color,
-             font=("Helvetica", 12), justify="center", wraplength=500).pack(padx=20, pady=(40, 20))
+             font=(font, font_size), justify="center", wraplength=500).pack(padx=20, pady=(40, 20))
 
     def rozpocznij():
         if on_start_callback:
@@ -47,6 +47,6 @@ def show_welcome_intro(root, bg_color, fg_color, on_start_callback=None):
         win.destroy()
 
     tk.Button(win, text="🚀 Rozpocznij przygodę", command=rozpocznij,
-              bg=fg_color, fg=bg_color, font=("Helvetica", 11, "bold"), width=22).pack(pady=10)
+              bg=fg_color, fg=bg_color, font=(font, font_size, "bold"), width=22).pack(pady=10)
 
     win.protocol("WM_DELETE_WINDOW", rozpocznij)

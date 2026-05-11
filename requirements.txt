@@ -1,4 +1,6 @@
+customtkinter
 tk
 Pillow
 plyer
 pystray
+pywin32

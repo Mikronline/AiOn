@@ -3,13 +3,16 @@ import json
 from tkinter import Toplevel, Label, Button, Frame, DoubleVar, Scale
 from PIL import Image, ImageTk
 from config import CONFIG_PATH, zapisz_config, ukryj_plik_konfig
+from utils.resource_path import resource_path
 
 
 class TutorialWindow:
-    def __init__(self, root, bg_color, fg_color):
+    def __init__(self, root, bg_color, fg_color, font, font_size):
         self.root = root
         self.bg_color = bg_color
         self.fg_color = fg_color
+        self.font = font
+        self.font_size = font_size
 
         self.slides = self.definiuj_slajdy()
         self.current_slide = 0
@@ -40,7 +43,7 @@ class TutorialWindow:
         self.scale_slider.grid(row=1, column=0, pady=(0, 5))
 
         self.slide_text = Label(self.okno, text="", wraplength=700,
-                                bg=bg_color, fg=fg_color, font=("Helvetica", 13),
+                                bg=bg_color, fg=fg_color, font=(font, font_size),
                                 justify="center")
         self.slide_text.grid(row=1, column=0, sticky="n", pady=(10, 5))
 
@@ -52,17 +55,17 @@ class TutorialWindow:
 
         self.dots = []
         for i in range(len(self.slides)):
-            dot = Label(self.dot_frame, text="●", font=("Helvetica", 12),
+            dot = Label(self.dot_frame, text="●", font=(font, font_size),
                         fg=fg_color if i == 0 else "gray", bg=bg_color)
             dot.pack(side="left", padx=2)
             self.dots.append(dot)
 
         self.prev_btn = Button(self.btn_frame, text="◀ Poprzedni", command=self.poprzedni_slajd,
-                               bg="#444", fg="white", font=("Helvetica", 10, "bold"), width=12)
+                               bg="#444", fg="white", font=(font, font_size, "bold"), width=12)
         self.prev_btn.pack(side="left", padx=10)
 
         self.next_btn = Button(self.btn_frame, text="Dalej ▶", command=self.następny_slajd,
-                               bg="#0f0", fg="black", font=("Helvetica", 10, "bold"), width=12)
+                               bg="#0f0", fg="black", font=(font, font_size, "bold"), width=12)
         self.next_btn.pack(side="left", padx=10)
 
         self.pokaż_slajd(0)
@@ -71,7 +74,7 @@ class TutorialWindow:
         return [
             {
                 "image": "assets/img/step1.png",
-                "text": "🎨 Witaj w AiOn! Dostosuj interfejs – kliknij ⚙️, by zmienić kolory i ponownie uruchomić ten samouczek."
+                "text": "🎨 Witaj w AiOn! Dostosuj interfejs – kliknij ⚙️, by zmienić kolory lub zmienić czcionkę i ponownie uruchomić ten samouczek."
             },
             {
                 "image": "assets/img/step2.png",
@@ -96,6 +99,18 @@ class TutorialWindow:
             {
                 "image": "assets/img/step7.png",
                 "text": "🔍 Statystyki dają Ci wgląd w aktywność: liczba notatek, najczęstsze słowa, regularność i więcej!"
+            },
+            {
+                "image": "assets/img/step8.png",
+                "text": "🕛 Kliknij ikonę zegara, aby przejść do narzędzi czasu – stopera i alarmu."
+            },
+            {
+                "image": "assets/img/step9.png",
+                "text": "⏱️ Stoper umożliwia dokładne mierzenie czasu – idealny do zadań i treningów."
+            },
+            {
+                "image": "assets/img/step10.png",
+                "text": "⏰ Alarm pozwala ustawić godzinę powiadomienia, aby nie przegapić ważnych wydarzeń."
             }
         ]
 
@@ -109,7 +124,7 @@ class TutorialWindow:
         slide = self.slides[index]
 
         try:
-            img = Image.open(slide["image"])
+            img = Image.open(resource_path(slide["image"]))
             scale = self.scale_var.get()
 
             max_width, max_height = 500, 300
@@ -131,19 +146,19 @@ class TutorialWindow:
             self.slide_image_label.config(text="")
         except Exception as e:
             self.slide_image_label.configure(image="", text="[Błąd ładowania obrazu]",
-                                             fg=self.fg_color, bg=self.bg_color)
+                                             fg=self.fg_color, bg=self.bg_color, font=(self.font, self.font_size))
             print(f"Błąd ładowania obrazu: {e}")
 
         self.slide_text.config(text=slide["text"])
         self.prev_btn.config(state="normal" if index > 0 else "disabled")
 
         if index == len(self.slides) - 1:
-            self.next_btn.config(text="Zakończ", command=self.zakończ_tutorial)
+            self.next_btn.config(text="Zakończ", command=self.zakończ_tutorial, font=(self.font, self.font_size))
         else:
-            self.next_btn.config(text="Dalej ▶", command=self.następny_slajd)
+            self.next_btn.config(text="Dalej ▶", command=self.następny_slajd, font=(self.font, self.font_size))
 
         for i, dot in enumerate(self.dots):
-            dot.config(fg=self.fg_color if i == index else "gray")
+            dot.config(fg=self.fg_color if i == index else "gray", font=(self.font, self.font_size))
 
     def następny_slajd(self):
         if self.current_slide < len(self.slides) - 1:
@@ -160,7 +175,7 @@ class TutorialWindow:
         try:
             with open(CONFIG_PATH, "r", encoding="utf-8") as f:
                 config = json.load(f)
-            config["samouczek_ukończony"] = True
+            config["samouczek_ukonczony"] = True
             zapisz_config(config)
         except Exception as e:
             print(f"Błąd zapisu tutorialu: {e}")
